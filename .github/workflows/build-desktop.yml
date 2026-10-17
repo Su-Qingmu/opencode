@@ -8,6 +8,11 @@ name: build-desktop
 # 部分 GitHub Actions 索引器/工具会因此拒绝识别这个 workflow。
 
 "on":
+  push:
+    branches:
+      - feat/desktop-build-action
+    paths:
+      - .github/workflows/build-desktop.yml
   workflow_dispatch:
     inputs:
       publish_release:
@@ -29,6 +34,7 @@ concurrency:
 
 jobs:
   build:
+    if: github.event_name != 'push' || contains(github.event.head_commit.message, '[build-desktop-release]')
     name: Build Windows x64 (OpenCode Dev)
     runs-on: windows-latest
     timeout-minutes: 60
@@ -90,7 +96,7 @@ jobs:
           retention-days: 30
 
       - name: Publish GitHub Release
-        if: inputs.publish_release == 'true'
+        if: inputs.publish_release == 'true' || github.event_name == 'push'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: desktop-dev-${{ github.run_number }}
