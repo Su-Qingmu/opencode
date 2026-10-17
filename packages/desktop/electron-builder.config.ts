@@ -63,6 +63,16 @@ function resolveChannel() {
   return "dev"
 }
 
+function devPublishConfig(): Configuration["publish"] {
+  if (process.env.OPENCODE_DESKTOP_GITHUB_PUBLISH !== "true") return undefined
+
+  const [owner, repo, ...rest] = (process.env.GITHUB_REPOSITORY ?? "").split("/")
+
+  if (!owner || !repo || rest.length) throw new Error("GITHUB_REPOSITORY must use the owner/repo format")
+
+  return { provider: "github", owner, repo, releaseType: "prerelease", channel: "latest" }
+}
+
 const APP_IDS = {
   dev: "ai.opencode.desktop.dev",
   beta: "ai.opencode.desktop.beta",
@@ -222,6 +232,7 @@ export function getConfig() {
         ...base,
         appId,
         productName: "OpenCode Dev",
+        publish: devPublishConfig(),
         deb: { fpm: [metainfoFpm(appId)] },
         rpm: { packageName: "opencode-dev", fpm: [metainfoFpm(appId)] },
       }

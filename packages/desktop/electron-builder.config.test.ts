@@ -84,6 +84,29 @@ test("shared packaging defaults", async () => {
   ])
 })
 
+test("dev release metadata targets the current GitHub repository when enabled", () => {
+  const previousPublish = process.env.OPENCODE_DESKTOP_GITHUB_PUBLISH
+  const previousRepository = process.env.GITHUB_REPOSITORY
+  process.env.OPENCODE_DESKTOP_GITHUB_PUBLISH = "true"
+  process.env.GITHUB_REPOSITORY = "Su-Qingmu/opencode"
+
+  try {
+    expect(load("dev").publish).toEqual({
+      provider: "github",
+      owner: "Su-Qingmu",
+      repo: "opencode",
+      releaseType: "prerelease",
+      channel: "latest",
+    })
+  } finally {
+    if (previousPublish === undefined) delete process.env.OPENCODE_DESKTOP_GITHUB_PUBLISH
+    else process.env.OPENCODE_DESKTOP_GITHUB_PUBLISH = previousPublish
+
+    if (previousRepository === undefined) delete process.env.GITHUB_REPOSITORY
+    else process.env.GITHUB_REPOSITORY = previousRepository
+  }
+})
+
 test("trims external dependencies without excluding runtime files", () => {
   const fileStats = statSync(import.meta.filename)
   const dirStats = statSync(import.meta.dirname)

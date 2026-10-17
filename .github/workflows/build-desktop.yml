@@ -10,7 +10,7 @@ name: build-desktop
 "on":
   push:
     branches:
-      - feat/desktop-build-action
+      - build/desktop-release
     paths:
       - .github/workflows/build-desktop.yml
   workflow_dispatch:
@@ -40,6 +40,7 @@ jobs:
     timeout-minutes: 60
     env:
       OPENCODE_CHANNEL: dev
+      OPENCODE_DESKTOP_GITHUB_PUBLISH: "true"
       OPENCODE_CLI_TARGET: x86_64-pc-windows-msvc
       OPENCODE_VERSION: dev-${{ github.run_number }}
       NODE_OPTIONS: --max-old-space-size=4096
@@ -73,8 +74,6 @@ jobs:
         working-directory: packages/desktop
         shell: bash
         run: npx electron-builder --win --publish never --config electron-builder.config.ts
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: List dist
         working-directory: packages/desktop
