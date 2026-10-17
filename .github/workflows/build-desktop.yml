@@ -4,7 +4,10 @@ name: build-desktop
 # 上传为 workflow artifact,并按需发布到 fork 的 GitHub Releases。
 # 适用仓库: Su-Qingmu/opencode (个人 fork,不需要 production 签名)。
 
-on:
+# 注意:`on:` 必须加引号 — 在 YAML 1.1 解析器里裸 `on` 会被解析成布尔 `true`,
+# 部分 GitHub Actions 索引器/工具会因此拒绝识别这个 workflow。
+
+"on":
   workflow_dispatch:
     inputs:
       publish_release:
