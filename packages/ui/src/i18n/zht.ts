@@ -249,7 +249,7 @@ export const dict = {
   "ui.promptInput.dropFiles.image": "拖放要新增的圖像或文件",
   "ui.promptInput.dropFiles.pdf": "拖放要新增的 PDF 或文件",
   "ui.promptInput.dropFiles.imagePdf": "拖放要新增的圖像、PDF 或文件",
-  "ui.promptInput.exitShell": "出口",
+  "ui.promptInput.exitShell": "退出",
   "ui.sessionTimeline.notice.agentChanged": "代理變更",
 
   "ui.sessionTurn.retry.attemptWaiting.one": "嘗試 {{attempt}} - 在 {{count}} 秒內重試",
